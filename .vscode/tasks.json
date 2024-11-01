@@ -32,6 +32,18 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "vsce: package",
+      "type": "shell",
+      "command": "vsce package --pre-release",
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
     }
   ]
 }
