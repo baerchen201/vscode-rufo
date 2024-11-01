@@ -33,11 +33,32 @@ suite("Rufo Tests", () => {
         document = doc;
         return vscode.window.showTextDocument(doc);
       })
-      .then(() => wait(1500)) // we need to wait a little bit until rufo is loaded
-      .then(() =>
-        vscode.commands.executeCommand("editor.action.formatDocument")
+      .then(
+        () =>
+          new Promise(async (resolve) => {
+            while (1) {
+              if (
+                vscode.extensions
+                  .getExtension("baer1.vscode-rufo")
+                  ?.exports["state"]() === "ready"
+              ) {
+                return resolve(undefined);
+              } else {
+                await wait(50);
+              }
+            }
+          })
       )
-      .then(() => wait(500)) // wait until rufo executed
+      .then(() => {
+        return new Promise((resolve) => {
+          vscode.extensions
+            .getExtension("baer1.vscode-rufo")!
+            .exports["onformat"](() => {
+              setTimeout(resolve, 50);
+            });
+          vscode.commands.executeCommand("editor.action.formatDocument");
+        });
+      }) // wait until rufo executed
       .then(() => {
         assert.strictEqual(document.getText(), CORRECT);
       });
@@ -75,7 +96,7 @@ suite("Rufo Tests", () => {
           vscode.extensions
             .getExtension("baer1.vscode-rufo")!
             .exports["onformat"](() => {
-              setTimeout(resolve, 50); // I could not hate this line more
+              setTimeout(resolve, 50);
             });
           vscode.commands.executeCommand("editor.action.formatSelection");
         });
