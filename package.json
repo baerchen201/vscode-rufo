@@ -65,6 +65,7 @@
   },
   "main": "./out/extension.js",
   "scripts": {
+    "vscode:prepublish": "npm run build",
     "prebuild": "node ./.rm.js",
     "build": "tsc -p ./",
     "pretest": "npm run build",
