@@ -48,9 +48,9 @@ b) Manually adjust your settings via your `settings.json` file:
 }
 ```
 
-_Attention:_ Restart Visual Studio Code after you have made changes to the settings.
+**Attention:** Restart Visual Studio Code after you have made changes to the settings.
 
-### _On Windows:_
+### **On Windows:**
 
 - `"rufo.exe": "cmd"`
 - `"rufo.args": ["/c", "rufo.bat"]`
