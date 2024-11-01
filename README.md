@@ -9,7 +9,8 @@ or [rbenv](https://github.com/rbenv/rbenv).
 
 ## Installation
 
-Press `F1`, type `ext install` then search for `jnbt.vscode-rufo`.
+This extension can currently not be installed.
+Please consider installing the original for now: [jnbt/vscode-rufo](https://github.com/jnbt/vscode-rufo#installation)
 
 ### `rufo` installation
 
