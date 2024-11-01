@@ -7,26 +7,34 @@ export default class EditProvider
     vscode.DocumentRangeFormattingEditProvider
 {
   private rufo: Rufo;
+  private onformat: () => void;
 
-  constructor() {
+  constructor(onformat: () => void) {
     this.rufo = new Rufo();
+    this.onformat = onformat;
   }
 
   public register(
     ctx: vscode.ExtensionContext,
     documentSelector: vscode.DocumentSelector
-  ) {
-    this.rufo.test().then(() => {
-      ctx.subscriptions.push(
-        vscode.languages.registerDocumentFormattingEditProvider(
-          documentSelector,
-          this
-        ),
-        vscode.languages.registerDocumentRangeFormattingEditProvider(
-          documentSelector,
-          this
-        )
-      );
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.rufo
+        .test()
+        .then(() => {
+          ctx.subscriptions.push(
+            vscode.languages.registerDocumentFormattingEditProvider(
+              documentSelector,
+              this
+            ),
+            vscode.languages.registerDocumentRangeFormattingEditProvider(
+              documentSelector,
+              this
+            )
+          );
+          resolve();
+        })
+        .catch(reject);
     });
   }
 
@@ -53,20 +61,17 @@ export default class EditProvider
   private formatDocument(document: vscode.TextDocument, range: vscode.Range) {
     const fileName = document.fileName
       ? document.fileName
-      : vscode.workspace.rootPath;
+      : vscode.workspace.workspaceFolders![0].name;
     const input = document.getText(range);
-    return this.rufo.format(input, fileName).then(
-      (result) => {
-        if (this.shouldRemoveTrailingNewline(document, range, result)) {
-          result = result.slice(0, -1);
-        }
-        return [new vscode.TextEdit(document.validateRange(range), result)];
-      },
-      (err) => {
-        // will be handled in format
-        return [];
+    return this.rufo.format(input, fileName).then((result) => {
+      if (this.shouldRemoveTrailingNewline(document, range, result)) {
+        result = result.slice(0, -1);
       }
-    );
+      if (this.onformat) {
+        this.onformat();
+      }
+      return [new vscode.TextEdit(document.validateRange(range), result)];
+    });
   }
 
   private shouldRemoveTrailingNewline(

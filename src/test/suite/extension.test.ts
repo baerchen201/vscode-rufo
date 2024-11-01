@@ -5,23 +5,23 @@ import { EOL } from "os";
 
 suite("Rufo Tests", () => {
   const FIXTURE = `class  NeedsChanges\n  def a_method( with_bizarre_formatting)\n    non_latin='你好'\n  end\nend`;
-  const CORRECT = `class NeedsChanges${EOL}  def a_method(with_bizarre_formatting)${EOL}    non_latin = "你好"${EOL}  end${EOL}end${EOL}`;
-  const PARTIALLY = `class  NeedsChanges\ndef a_method(with_bizarre_formatting)${EOL}  non_latin = "你好"${EOL}end${EOL}${EOL}end`;
+  const CORRECT = `class NeedsChanges\n  def a_method(with_bizarre_formatting)\n    non_latin = "你好"\n  end\nend\n`;
+  const PARTIALLY = `class  NeedsChanges\ndef a_method(with_bizarre_formatting)\n  non_latin = "你好"\nend\n\nend`;
   const wait = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  test("test detects rufo", (done) => {
+  test("test detects rufo", () => {
     const rufo = new Rufo();
-    rufo.test().then(() => {
-      done();
-    });
+    return rufo.test();
   });
 
-  test("formats text via rufo", (done) => {
-    const rufo = new Rufo();
-    rufo.format("echo  'a'", undefined).then((result: string) => {
-      assert.strictEqual(result, 'echo "a"' + EOL);
-      done();
+  test("formats text via rufo", () => {
+    return new Promise((resolve, reject) => {
+      const rufo = new Rufo();
+      rufo.format("echo  'a'", undefined).then((result: string) => {
+        assert.strictEqual(result, 'echo "a"' + EOL);
+        resolve(result);
+      });
     });
   });
 
@@ -54,15 +54,32 @@ suite("Rufo Tests", () => {
       })
       .then((text) => {
         textEdit = text;
-        // we need to wait a little bit until rufo is loaded
-        return wait(1000);
+        return new Promise(async (resolve) => {
+          while (1) {
+            if (
+              vscode.extensions
+                .getExtension("baer1.vscode-rufo")
+                ?.exports["state"]() === "ready"
+            ) {
+              return resolve(undefined);
+            } else {
+              await wait(50);
+            }
+          }
+        });
       })
-      .then(() => {
+      .then(async () => {
         const selection = new vscode.Selection(1, 0, 3, 5);
         textEdit.selection = selection;
-        return vscode.commands.executeCommand("editor.action.formatSelection");
+        return new Promise((resolve) => {
+          vscode.extensions
+            .getExtension("baer1.vscode-rufo")!
+            .exports["onformat"](() => {
+              setTimeout(resolve, 50); // I could not hate this line more
+            });
+          vscode.commands.executeCommand("editor.action.formatSelection");
+        });
       })
-      .then(() => wait(500)) // wait until rufo executed
       .then(() => {
         assert.strictEqual(document.getText(), PARTIALLY);
       });

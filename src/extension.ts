@@ -11,10 +11,27 @@ const DOCUMENT_SELECTOR: { language: string; scheme: string }[] = [
 ];
 
 export function activate(context: vscode.ExtensionContext) {
+  let state: "init" | "ready" | "crashed" = "init";
+
+  const callbacks: (() => void)[] = [];
+
   // register Rufo-based formatter
-  registerFormatter(context, DOCUMENT_SELECTOR);
+  registerFormatter(context, DOCUMENT_SELECTOR, () => {
+    callbacks.forEach((func) => func());
+  })
+    .then(() => {
+      state = "ready";
+    })
+    .catch(() => {
+      state = "crashed";
+    });
+
+  return {
+    state: () => state,
+    onformat: (func: () => void) => {
+      callbacks.push(func);
+    },
+  };
 }
 
-export function deactivate() {
-  // nothing yet
-}
+export function deactivate() {}
