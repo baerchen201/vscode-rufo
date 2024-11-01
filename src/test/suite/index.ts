@@ -1,8 +1,21 @@
 import * as path from "path";
 import * as Mocha from "mocha";
+import * as vscode from "vscode";
 import { glob } from "glob";
+import { platform } from "os";
 
-export function run(): Promise<void> {
+export async function run(): Promise<void> {
+  const configs = vscode.workspace.getConfiguration("rufo");
+  switch (platform()) {
+    case "win32":
+      await configs.update("exe", "cmd", true);
+      await configs.update("args", ["/c", "rufo.bat"], true);
+      break;
+
+    default:
+      break;
+  }
+
   // Create the mocha test
   const mocha = new Mocha({
     ui: "tdd",

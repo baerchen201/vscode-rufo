@@ -6,20 +6,11 @@ import { EOL, platform } from "os";
 suite("Rufo Tests", () => {
   const FIXTURE = `class  NeedsChanges\n  def a_method( with_bizarre_formatting)\n    non_latin='你好'\n  end\nend`;
   const CORRECT = `class NeedsChanges\n  def a_method(with_bizarre_formatting)\n    non_latin = "你好"\n  end\nend\n`;
-  const PARTIALLY = `class  NeedsChanges\ndef a_method(with_bizarre_formatting)\n  non_latin = "你好"\nend\n\nend`;
+  const PARTIALLY = `class  NeedsChanges\ndef a_method(with_bizarre_formatting)\n  non_latin = "你好"\nend${
+    platform() === "win32" ? "\n" : ""
+  }\nend`;
   const wait = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
-
-  const configs = vscode.workspace.getConfiguration("rufo");
-  switch (platform()) {
-    case "win32":
-      configs.update("exe", "cmd");
-      configs.update("args", ["/c", "rufo.bat"]);
-      break;
-
-    default:
-      break;
-  }
 
   test("test detects rufo", () => {
     const rufo = new Rufo();
@@ -48,14 +39,20 @@ suite("Rufo Tests", () => {
         () =>
           new Promise(async (resolve) => {
             while (1) {
-              if (
-                vscode.extensions
-                  .getExtension("baer1.vscode-rufo")
-                  ?.exports["state"]() === "ready"
-              ) {
-                return resolve(undefined);
-              } else {
-                await wait(50);
+              try {
+                if (
+                  (
+                    vscode.extensions.getExtension("baer1.vscode-rufo") ?? {
+                      exports: { state: "" },
+                    }
+                  ).exports["state"]() === "ready"
+                ) {
+                  return resolve(undefined);
+                } else {
+                  await wait(50);
+                }
+              } catch {
+                await wait(100);
               }
             }
           })
@@ -90,8 +87,8 @@ suite("Rufo Tests", () => {
           while (1) {
             if (
               vscode.extensions
-                .getExtension("baer1.vscode-rufo")
-                ?.exports["state"]() === "ready"
+                .getExtension("baer1.vscode-rufo")!
+                .exports["state"]() === "ready"
             ) {
               return resolve(undefined);
             } else {

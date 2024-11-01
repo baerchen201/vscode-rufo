@@ -143,6 +143,11 @@ export default class Rufo {
     }
 
     const cmd = exe.shift() as string;
+    console.log(
+      `Executing '${cmd}' with ${exe.length + args.length} argument${
+        exe.length + args.length === 1 ? "" : "s"
+      }`
+    );
     return cp.spawn(cmd, exe.concat(args), spawnOpt);
   };
 }
