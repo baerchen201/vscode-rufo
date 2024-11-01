@@ -42,7 +42,9 @@ suite("Rufo Tests", () => {
               try {
                 if (
                   (
-                    vscode.extensions.getExtension("baer1.vscode-rufo") ?? {
+                    vscode.extensions.getExtension(
+                      "baer1.vscode-rufo-fork"
+                    ) ?? {
                       exports: { state: "" },
                     }
                   ).exports["state"]() === "ready"
@@ -60,7 +62,7 @@ suite("Rufo Tests", () => {
       .then(() => {
         return new Promise((resolve) => {
           vscode.extensions
-            .getExtension("baer1.vscode-rufo")!
+            .getExtension("baer1.vscode-rufo-fork")!
             .exports["onformat"](() => {
               setTimeout(resolve, 50);
             });
@@ -87,7 +89,7 @@ suite("Rufo Tests", () => {
           while (1) {
             if (
               vscode.extensions
-                .getExtension("baer1.vscode-rufo")!
+                .getExtension("baer1.vscode-rufo-fork")!
                 .exports["state"]() === "ready"
             ) {
               return resolve(undefined);
@@ -102,7 +104,7 @@ suite("Rufo Tests", () => {
         textEdit.selection = selection;
         return new Promise((resolve) => {
           vscode.extensions
-            .getExtension("baer1.vscode-rufo")!
+            .getExtension("baer1.vscode-rufo-fork")!
             .exports["onformat"](() => {
               setTimeout(resolve, 50);
             });

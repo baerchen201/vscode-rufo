@@ -87,6 +87,6 @@ jobs:
       - name: Upload packaged extionsion
         uses: actions/upload-artifact@v4
         with:
-          path: "vscode-rufo-*.vsix"
+          path: "vscode-rufo-fork*.vsix"
           name: pre-release
           if-no-files-found: error
