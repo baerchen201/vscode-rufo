@@ -1,24 +1,12 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
 import Rufo from "../../formatter/rufo";
+import { EOL } from "os";
 
 suite("Rufo Tests", () => {
-  const FIXTURE = `class  NeedsChanges
-  def a_method( with_bizarre_formatting)
-    non_latin='你好'
-  end
-end`;
-  const CORRECT = `class NeedsChanges
-  def a_method(with_bizarre_formatting)
-    non_latin = "你好"
-  end
-end
-`;
-  const PARTIALLY = `class  NeedsChanges
-def a_method(with_bizarre_formatting)
-  non_latin = "你好"
-end
-end`;
+  const FIXTURE = `class  NeedsChanges\n  def a_method( with_bizarre_formatting)\n    non_latin='你好'\n  end\nend`;
+  const CORRECT = `class NeedsChanges${EOL}  def a_method(with_bizarre_formatting)${EOL}    non_latin = "你好"${EOL}  end${EOL}end${EOL}`;
+  const PARTIALLY = `class  NeedsChanges\ndef a_method(with_bizarre_formatting)${EOL}  non_latin = "你好"${EOL}end${EOL}${EOL}end`;
   const wait = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -31,8 +19,8 @@ end`;
 
   test("formats text via rufo", (done) => {
     const rufo = new Rufo();
-    rufo.format("echo  'a'", undefined).then((result: any) => {
-      assert.strictEqual(result, 'echo "a"\n');
+    rufo.format("echo  'a'", undefined).then((result: string) => {
+      assert.strictEqual(result, 'echo "a"' + EOL);
       done();
     });
   });
