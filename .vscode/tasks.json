@@ -5,12 +5,15 @@
   "tasks": [
     {
       "label": "tsc: watch",
-      "type": "npm",
-      "script": "watch",
+      "type": "shell",
+      "command": "tsc",
+      "args": ["--watch"],
       "problemMatcher": "$tsc-watch",
       "isBackground": true,
       "presentation": {
-        "reveal": "never"
+        "reveal": "never",
+        "panel": "dedicated",
+        "close": true
       },
       "group": {
         "kind": "build",
@@ -20,10 +23,10 @@
     {
       "label": "tsc: build",
       "type": "npm",
-      "script": "compile",
+      "script": "build",
       "problemMatcher": "$tsc",
       "presentation": {
-        "reveal": "always"
+        "reveal": "silent"
       },
       "group": {
         "kind": "build",

@@ -65,10 +65,9 @@
   },
   "main": "./out/extension.js",
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "node ./rm.js && tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && eslint src --ext ts",
+    "prebuild": "node ./.rm.js",
+    "build": "tsc -p ./",
+    "pretest": "npm run build",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
