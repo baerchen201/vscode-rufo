@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
 import Rufo from "../../formatter/rufo";
-import { EOL } from "os";
+import { EOL, platform } from "os";
 
 suite("Rufo Tests", () => {
   const FIXTURE = `class  NeedsChanges\n  def a_method( with_bizarre_formatting)\n    non_latin='你好'\n  end\nend`;
@@ -9,6 +9,17 @@ suite("Rufo Tests", () => {
   const PARTIALLY = `class  NeedsChanges\ndef a_method(with_bizarre_formatting)\n  non_latin = "你好"\nend\n\nend`;
   const wait = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
+
+  const configs = vscode.workspace.getConfiguration("rufo");
+  switch (platform()) {
+    case "win32":
+      configs.update("exe", "cmd");
+      configs.update("args", ["/c", "rufo.bat"]);
+      break;
+
+    default:
+      break;
+  }
 
   test("test detects rufo", () => {
     const rufo = new Rufo();
