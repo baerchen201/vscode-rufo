@@ -1,12 +1,15 @@
 import * as cp from 'child_process';
+import { platform } from 'os';
 import * as vscode from 'vscode';
 
 type RufoOptions = {
+  batchFile: boolean,
   exe: string,
   useBundler: boolean
 };
 
 const DEFAULT_OPTIONS: RufoOptions = {
+  batchFile: false,
   exe: "rufo",
   useBundler: false
 };
@@ -108,11 +111,19 @@ export default class Rufo {
 
   private get exe(): string[] {
     const {exe, useBundler} = this.options;
-    return useBundler ? [`bundle exec ${exe}`] : [exe];
+    if (this.options.batchFile) {
+      const bat = exe.endsWith(".bat") || exe.endsWith(".cmd") ? exe : `${exe}.bat`;
+      return useBundler ? [`bundle exec cmd /c ${bat}`] : [`cmd /c ${bat}`];
+    } else {
+      return useBundler ? [`bundle exec ${exe}`] : [exe];
+    }
   }
 
   private get options(): RufoOptions {
     const config = vscode.workspace.getConfiguration('rufo');
+    if (typeof config.get("rufo.batchFile") !== "boolean") {
+      config.update("rufo.batchFile", platform() === "win32", true);
+    }
     const opts = Object.assign({}, DEFAULT_OPTIONS, config);
     return opts;
   }
@@ -128,6 +139,8 @@ export default class Rufo {
       // also here we need to assume UTF-8 (see above)
       spawnOpt.env = { ...process.env, LANG: "en_US.UTF-8" }; // eslint-disable-line @typescript-eslint/naming-convention
     }
+
+    console.log(exe, args);
 
     const cmd = exe.shift() as string;
     return cp.spawn(cmd, exe.concat(args), spawnOpt);

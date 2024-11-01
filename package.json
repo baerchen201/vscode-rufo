@@ -41,6 +41,11 @@
         "configuration": {
             "title": "Rufo",
             "properties": {
+                "rufo.batchFile": {
+                    "type": "boolean",
+                    "default": null,
+                    "description": "Whether the executable should be interpreted as a batch file (Windows)"
+                },
                 "rufo.exe": {
                     "type": "string",
                     "default": "rufo",
