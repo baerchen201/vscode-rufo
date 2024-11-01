@@ -1,27 +1,29 @@
 {
     "name": "vscode-rufo",
-    "displayName": "Rufo - Ruby formatter",
-    "description": "VS Code plugin for ruby-formatter/rufo",
-    "homepage": "https://github.com/jnbt/vscode-rufo/blob/master/README.md",
+    "displayName": "Rufo - Ruby formatter (Fork)",
+    "description": "VSCode plugin for the rufo ruby formatter",
+    "homepage": "https://github.com/baerchen201/vscode-rufo/blob/main/README.md",
     "repository": {
         "type": "git",
-        "url": "https://github.com/jnbt/vscode-rufo.git"
+        "url": "https://github.com/baerchen201/vscode-rufo"
     },
     "keywords": [
         "ruby",
         "rufo",
-        "formatting"
+        "formatting",
+        "formatter"
     ],
     "bugs": {
-        "url": "https://github.com/jnbt/vscode-rufo/issues"
+        "url": "https://github.com/baerchen201/vscode-rufo/issues"
     },
-    "license": "SEE LICENSE IN LICENSE",
-    "version": "0.0.5",
+    "license": "MIT License",
+    "version": "0.0.6",
     "author": {
-        "name": "jnbt",
-        "url": "https://github.com/jnbt"
+        "name": "baer1",
+        "url": "https://github.com/baerchen201",
+        "email": "videocreator@outlook.de"
     },
-    "publisher": "jnbt",
+    "publisher": "baer1",
     "engines": {
         "vscode": "^1.63.1"
     },

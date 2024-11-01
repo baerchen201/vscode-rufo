@@ -1,5 +1,7 @@
 # vscode-rufo
 
+### This extension is a fork of [jnbt/vscode-rufo](https://github.com/jnbt/vscode-rufo)
+
 This Visual Studio Code extension provides formatting via
 [Rufo](https://github.com/ruby-formatter/rufo). It will be used
 with files that have the “Ruby” syntax. Supports setups via [RVM](http://rvm.io)
@@ -76,6 +78,7 @@ will continue to work after you upgrade your Ruby:
 ## Develop
 
 * Use Visual Studio Code to develop this extension
+* Run `npm install` to install the dependencies
 * Press `F5` to open a new window with the extension loaded
 * Open a Ruby file or paste some Ruby code into the window
 * Open the command palette by pressing (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac)
@@ -90,7 +93,7 @@ will continue to work after you upgrade your Ruby:
 
 ## Contributing
 
-1. [Fork it](https://github.com/jnbt/vscode-rufo/fork)
+1. [Fork it](https://github.com/baerchen201/vscode-rufo/fork)
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
