@@ -7,10 +7,15 @@ This Visual Studio Code extension provides formatting via
 with files that have the “Ruby” syntax. Supports setups via [RVM](http://rvm.io)
 or [rbenv](https://github.com/rbenv/rbenv).
 
+### This project is still in beta
+
+If you would like to [report a bug](https://github.com/baerchen201/vscode-rufo/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=), [request a feature](https://github.com/baerchen201/vscode-rufo/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=) or help development, you can view the [source code on GitHub.](https://github.com/baerchen201/vscode-rufo)
+
 ## Installation
 
-This extension can currently not be installed.
-Please consider installing the original for now: [jnbt/vscode-rufo](https://github.com/jnbt/vscode-rufo#installation)
+You can download this extension from its [marketplace page](https://marketplace.visualstudio.com/items?itemName=baer1.vscode-rufo-fork).
+
+Alternatively, press `Ctrl+P`, type `ext install baer1.vscode-rufo-fork` and press enter.
 
 ### `rufo` installation
 
@@ -29,7 +34,7 @@ higher, is installed on your system. To install `rufo`, do the following:
 If you're are using [RVM](http://rvm.io) or [rbenv](https://github.com/rbenv/rbenv), seek
 for more information below.
 
-If you are using Windows, please use the settings [below](#on-windows).
+**If you are using Windows, please use the settings [below](#on-windows).**
 
 ## Settings
 
