@@ -47,13 +47,13 @@
           "type": "string",
           "default": "rufo",
           "description": "Path to invoke rufo",
-          "scope": "application"
+          "scope": "machine-overridable"
         },
         "rufo.args": {
           "type": "array",
           "default": [],
           "description": "Additional arguments to pass to the executable",
-          "scope": "application"
+          "scope": "machine-overridable"
         },
         "rufo.useBundler": {
           "type": "boolean",
